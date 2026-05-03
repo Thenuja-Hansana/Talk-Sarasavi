@@ -7,8 +7,9 @@
   
   <p align="center">
     <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native" />
-    <img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
+    <img src="https://img.shields.io/badge/Expo_Router-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo Router" />
     <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/Zustand-443E38?style=for-the-badge&logo=react&logoColor=white" alt="Zustand" />
     <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
     <img src="https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" alt="GCP" />
     <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI" />
@@ -33,12 +34,12 @@ It begins by communicating heavily in Sinhala and progressively shifts to Englis
 
 ## 🏗️ Architecture & Tech Stack
 
-This project follows a disciplined **Monorepo** structure, heavily relying on serverless infrastructure to minimize operational overhead for solo development.
+This project follows a disciplined **NPM Workspace Monorepo** structure, strictly separating client UI from server logic to ensure maximum security and maintainability.
 
 | Domain | Technology | Purpose |
 | :--- | :--- | :--- |
 | **Frontend** | React Native + Expo | Cross-platform (iOS/Android) mobile app. |
-| **State & Navigation** | Zustand + Expo Router | Lightweight state management and file-system routing. |
+| **State & Routing** | Zustand + Expo Router | Persistent state management and file-system navigation guards. |
 | **Backend** | Firebase Cloud Functions | Serverless backend logic running TypeScript. |
 | **Database** | Firestore | Real-time database for user profiles, usage limits, and session history. |
 | **Authentication** | Firebase Auth | Google & Apple Sign-In only (No email/password). |
@@ -80,20 +81,35 @@ sequenceDiagram
 
 ## 📂 Monorepo Structure
 
+The codebase is organized into specific domains. The mobile app utilizes a strict `app/` (routing) and `src/` (logic) separation.
+
 ```text
 talk-sarasavi/
 ├── apps/
 │   └── mobile/                     # React Native Expo app (iOS + Android)
+│       ├── app/                    # Expo Router file-system routing
+│       │   ├── (auth)/             # Unauthenticated screens (Onboarding, Login)
+│       │   ├── (app)/              # Protected screens (Chat, Progress, Settings)
+│       │   └── _layout.tsx         # Global navigation guards
+│       ├── src/                    # Core business logic & UI components
+│       │   ├── core/               # Services (Firebase, API clients)
+│       │   ├── features/           # Feature slices (Auth store, Game logic)
+│       │   ├── shared/             # UI atoms, theme, and models
+│       │   └── assets/             # Fonts and imagery
+│       └── metro.config.js         # Monorepo bundler configuration
+│
 ├── backend/
 │   ├── functions/                  # Firebase Cloud Functions (TypeScript)
 │   ├── firestore/                  # Rules & Indexes
 │   └── storage/                    # Storage Rules
-├── shared/
-│   └── contracts/                  # API contracts & Error codes (Shared Types)
-├── docs/                           # Architecture, API, and Data Model docs
-├── scripts/                        # Deployment & seeding tools
+│
+├── shared/                         # Internal NPM package (@talk-sarasavi/shared)
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── notes/                          # Developer handbooks and architecture studies
 ├── .github/workflows/              # CI/CD pipelines (Linting & Deployments)
-└── firebase.json                   # Firebase configuration
+└── package.json                    # Root workspace config
 ```
 
 ---
@@ -102,8 +118,8 @@ talk-sarasavi/
 
 Development is split into 9 sequential phases to ensure stability and focus.
 
-- [ ] **Phase A:** Monorepo initialization & Firebase dev/prod setup.
-- [ ] **Phase B:** Authentication & User Profile creation (Google/Apple Sign-In).
+- [x] **Phase A:** Monorepo initialization & NPM Workspaces setup.
+- [x] **Phase B:** Authentication & User Profile creation (State, UI, Routing Guards).
 - [ ] **Phase C:** Voice Pipeline Backend (STT → LLM → TTS over Cloud Functions).
 - [ ] **Phase D:** Conversation UI (Mic capture, playback, and overlay feedback).
 - [ ] **Phase E:** Progress Tracking (Session summaries and progress dashboard).
