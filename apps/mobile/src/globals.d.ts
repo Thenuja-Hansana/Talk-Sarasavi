@@ -6,5 +6,6 @@ declare global {
     interface ElementClass extends React.Component<any> {
       render(): React.ReactNode;
     }
+    interface IntrinsicElements extends React.JSX.IntrinsicElements {}
   }
 }

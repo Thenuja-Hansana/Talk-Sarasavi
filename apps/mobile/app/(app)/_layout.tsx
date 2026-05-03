@@ -1,8 +1,7 @@
 import { Redirect, Tabs } from 'expo-router';
 import { useAuthStore } from '@/features/auth/auth-store';
-import { ActivityIndicator, View } from 'react-native';
 
-export default function AppLayout() {
+export default function AppLayout(): React.JSX.Element {
   const { user } = useAuthStore();
 
   if (!user) {

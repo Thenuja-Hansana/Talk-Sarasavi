@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { useAuthStore } from '@/features/auth/auth-store';
 
-export default function SettingsScreen() {
+export default function SettingsScreen(): React.JSX.Element {
   const signOut = useAuthStore(state => state.signOut);
 
   return (
